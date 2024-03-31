@@ -42,7 +42,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(server);
   } catch (error) {
-    console.log('[SERVER_POST', error);
+    console.log('[SERVER_POST]', error);
 
     return new NextResponse('网络错误', { status: 500 });
   }

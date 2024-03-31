@@ -1,7 +1,15 @@
 'use client';
 
 import { MemberRole } from '@prisma/client';
-import { ChevronDown, UserPlus, Settings, Trash } from 'lucide-react';
+import {
+  ChevronDown,
+  LogOut,
+  PlusCircle,
+  Settings,
+  Trash,
+  UserPlus,
+  Users,
+} from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -12,6 +20,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { ServerWithMembersWithProfiles } from '@/types';
+import { useModal } from '@/hooks/use-modal-store';
 
 interface ServerHeaderProps {
   server: ServerWithMembersWithProfiles;
@@ -19,6 +28,8 @@ interface ServerHeaderProps {
 }
 
 const ServerHeader = ({ server, role }: ServerHeaderProps) => {
+  const { onOpen } = useModal();
+
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
@@ -33,7 +44,12 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
 
       <DropdownMenuContent className='w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]'>
         {isModerator && (
-          <DropdownMenuItem className='text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer'>
+          <DropdownMenuItem
+            className='text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer'
+            onClick={() => {
+              onOpen('invite', { server });
+            }}
+          >
             邀请加入
             <UserPlus className='h-4 w-4 ml-auto'></UserPlus>
           </DropdownMenuItem>
@@ -47,13 +63,13 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {isAdmin && (
           <DropdownMenuItem className='px-3 py-2 text-sm cursor-pointer'>
             管理成员
-            <Settings className='h-4 w-4 ml-auto'></Settings>
+            <Users className='h-4 w-4 ml-auto'></Users>
           </DropdownMenuItem>
         )}
         {isModerator && (
           <DropdownMenuItem className='px-3 py-2 text-sm cursor-pointer'>
             新建频道
-            <Settings className='h-4 w-4 ml-auto'></Settings>
+            <PlusCircle className='h-4 w-4 ml-auto'></PlusCircle>
           </DropdownMenuItem>
         )}
         {isModerator && <DropdownMenuSeparator></DropdownMenuSeparator>}
@@ -67,7 +83,7 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {!isAdmin && (
           <DropdownMenuItem className='px-3 py-2 text-sm cursor-pointer text-rose-500'>
             离开服务器
-            <Trash className='h-4 w-4 ml-auto'></Trash>
+            <LogOut className='h-4 w-4 ml-auto'></LogOut>
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>
