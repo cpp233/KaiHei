@@ -6,6 +6,7 @@ export default authMiddleware({
   // Allow signed out users to access the specified routes:
   // publicRoutes: ['/sign-in', '/sign-up'],
   // http://localhost:3001/sign-in
+  publicRoutes: ['/api/uploadthing'],
 });
 
 export const config = {

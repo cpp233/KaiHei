@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { db } from '@/lib/db';
 import { initProfile } from '@/lib/init-profile';
+import { InitModel } from '@/components/modals/init-model';
 
 const SetupPage = async () => {
   const profile = await initProfile();
@@ -19,7 +20,7 @@ const SetupPage = async () => {
     return redirect(`/servers/${server.id}`);
   }
 
-  return <div>等待创建服务器</div>;
+  return <InitModel></InitModel>;
 };
 
 export default SetupPage;
