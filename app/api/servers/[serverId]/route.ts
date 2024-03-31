@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import { NextResponse } from 'next/server';
 import { currentProfile } from '@/lib/current-profile';
 import { db } from '@/lib/db';
@@ -9,27 +8,27 @@ export async function PATCH(
 ) {
   try {
     const profile = await currentProfile();
+    const { name, imageUrl } = await req.json();
 
     if (!profile) {
       return new NextResponse('未认证', { status: 401 });
     }
 
-    if (!params.serverId) {
-      return new NextResponse('缺少服务器 ID', { status: 400 });
-    }
-
-    const uuid = crypto.randomUUID();
-
     const server = await db.server.update({
-      where: { id: params.serverId, profileId: profile.id },
+      where: {
+        id: params.serverId,
+        // 确保拥有者才能修改
+        profileId: profile.id,
+      },
       data: {
-        inviteCode: uuid,
+        name,
+        imageUrl,
       },
     });
 
     return NextResponse.json(server);
   } catch (error) {
-    console.log('[SERVER_INVITE_CODE]', error);
+    console.log('[SERVER_PATCH]', error);
 
     return new NextResponse('网络错误', { status: 500 });
   }
