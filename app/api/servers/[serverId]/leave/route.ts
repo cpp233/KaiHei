@@ -18,18 +18,31 @@ export async function PATCH(
       return new NextResponse('缺少服务器 ID', { status: 400 });
     }
 
-    const uuid = crypto.randomUUID();
-
     const server = await db.server.update({
-      where: { id: params.serverId, profileId: profile.id },
+      where: {
+        id: params.serverId,
+        profileId: {
+          // 不能把 创始人 踢出了
+          not: profile.id,
+        },
+        members: {
+          some: {
+            profileId: profile.id,
+          },
+        },
+      },
       data: {
-        inviteCode: uuid,
+        members: {
+          deleteMany: {
+            profileId: profile.id,
+          },
+        },
       },
     });
 
     return NextResponse.json(server);
   } catch (error) {
-    console.log('[SERVER_ID_INVITE_CODE]', error);
+    console.log('[SERVER_ID_LEAVE]', error);
 
     return new NextResponse('网络错误', { status: 500 });
   }

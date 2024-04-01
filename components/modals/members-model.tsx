@@ -157,7 +157,7 @@ export const MembersModel = () => {
                                 }
                               >
                                 <ShieldCheck className='h-4 w-4 mr-2'></ShieldCheck>
-                                {MemberRole.MODERATOR && '管理员'}
+                                {MemberRole.MODERATOR && '版主'}
                                 {member.role === MemberRole.MODERATOR && (
                                   <Check className='h-4 w-4 ml-auto'></Check>
                                 )}

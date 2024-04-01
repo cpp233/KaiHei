@@ -33,3 +33,30 @@ export async function PATCH(
     return new NextResponse('网络错误', { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { serverId: string } }
+) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      return new NextResponse('未认证', { status: 401 });
+    }
+
+    const server = await db.server.delete({
+      where: {
+        id: params.serverId,
+        // 确保拥有者才能修改
+        profileId: profile.id,
+      },
+    });
+
+    return NextResponse.json(server);
+  } catch (error) {
+    console.log('[SERVER_DELETE]', error);
+
+    return new NextResponse('网络错误', { status: 500 });
+  }
+}

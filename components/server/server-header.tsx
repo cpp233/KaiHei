@@ -91,13 +91,23 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {isModerator && <DropdownMenuSeparator></DropdownMenuSeparator>}
 
         {isAdmin && (
-          <DropdownMenuItem className='px-3 py-2 text-sm cursor-pointer text-rose-500'>
+          <DropdownMenuItem
+            className='px-3 py-2 text-sm cursor-pointer text-rose-500'
+            onClick={() => {
+              onOpen('deleteServer', { server });
+            }}
+          >
             删除服务器
             <Trash className='h-4 w-4 ml-auto'></Trash>
           </DropdownMenuItem>
         )}
         {!isAdmin && (
-          <DropdownMenuItem className='px-3 py-2 text-sm cursor-pointer text-rose-500'>
+          <DropdownMenuItem
+            className='px-3 py-2 text-sm cursor-pointer text-rose-500'
+            onClick={() => {
+              onOpen('leaveServer', { server });
+            }}
+          >
             离开服务器
             <LogOut className='h-4 w-4 ml-auto'></LogOut>
           </DropdownMenuItem>
