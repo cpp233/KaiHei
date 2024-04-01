@@ -55,7 +55,7 @@ export const MembersModel = () => {
 
   const isModelOpen = isOpen && type === 'manageMembers';
 
-  const { server } = data;
+  const { server } = data || { server: null };
 
   const onRoleChange = async (memberId: string, role: MemberRole) => {
     try {

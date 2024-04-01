@@ -81,7 +81,7 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
             className='px-3 py-2 text-sm cursor-pointer'
             onClick={() => {
               // onOpen('createChannel');
-              onOpen('createChannel', { server });
+              onOpen('createChannel');
             }}
           >
             新建频道
@@ -105,7 +105,7 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
           <DropdownMenuItem
             className='px-3 py-2 text-sm cursor-pointer text-rose-500'
             onClick={() => {
-              onOpen('leaveServer', { server });
+              onOpen('leaveServer');
             }}
           >
             离开服务器

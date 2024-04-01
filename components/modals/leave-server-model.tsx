@@ -21,7 +21,7 @@ export const LeaveServerModel = () => {
   const router = useRouter();
 
   const isModelOpen = isOpen && type === 'leaveServer';
-  const { server } = data;
+  const { server } = data || { server: null };
 
   const onClick = async () => {
     try {

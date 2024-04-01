@@ -21,7 +21,7 @@ export const DeleteServerModel = () => {
   const router = useRouter();
 
   const isModelOpen = isOpen && type === 'deleteServer';
-  const { server } = data;
+  const { server } = data || { server: null };
 
   const onClick = async () => {
     try {

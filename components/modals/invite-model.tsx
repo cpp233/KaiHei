@@ -22,7 +22,8 @@ export const InviteModel = () => {
 
   const isModelOpen = isOpen && type === 'invite';
 
-  const { server } = data;
+  const { server } = data || { server: null };
+
   const inviteUrl = `${origin}/invite/${server?.inviteCode}`;
 
   const [copied, setCopied] = useState(false);
