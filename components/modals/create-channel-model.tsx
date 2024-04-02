@@ -35,13 +35,14 @@ import {
 
 import { useModal } from '@/hooks/use-modal-store';
 import { useEffect } from 'react';
+import { DEFAULT_CHANNEL } from '@/lib/getEnv';
 
 const formSchema = z.object({
   name: z
     .string()
     .min(1, { message: '缺少名称' })
-    .refine(name => name !== '默认频道', {
-      message: '频道名称不能为 "默认频道"',
+    .refine(name => name !== DEFAULT_CHANNEL, {
+      message: `频道名称不能为 "${DEFAULT_CHANNEL}"`,
     }),
   type: z.nativeEnum(ChannelType),
 });

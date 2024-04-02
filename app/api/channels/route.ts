@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { currentProfile } from '@/lib/current-profile';
 import { db } from '@/lib/db';
 import { MemberRole } from '@prisma/client';
+import { DEFAULT_CHANNEL } from '@/lib/getEnv';
 
 export async function POST(req: Request) {
   try {
@@ -20,8 +21,10 @@ export async function POST(req: Request) {
       return new NextResponse('缺少服务器 ID', { status: 400 });
     }
 
-    if (name === '默认频道') {
-      return new NextResponse('频道名称不能为 "默认频道"', { status: 400 });
+    if (name === DEFAULT_CHANNEL) {
+      return new NextResponse(`频道名称不能为 "${DEFAULT_CHANNEL}"`, {
+        status: 400,
+      });
     }
 
     const server = await db.server.update({

@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 import { currentProfile } from '@/lib/current-profile';
 import { db } from '@/lib/db';
 import { MemberRole } from '@prisma/client';
+import { DEFAULT_CHANNEL } from '@/lib/getEnv';
 
 export async function POST(req: Request) {
   try {
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
         inviteCode: uuid,
         channels: {
           create: {
-            name: '默认频道',
+            name: DEFAULT_CHANNEL,
             profileId: profile.id,
           },
         },

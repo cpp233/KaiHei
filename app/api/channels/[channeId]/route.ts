@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { currentProfile } from '@/lib/current-profile';
 import { db } from '@/lib/db';
 import { MemberRole } from '@prisma/client';
+import { DEFAULT_CHANNEL } from '@/lib/getEnv';
 
 export async function PATCH(
   req: Request,
@@ -28,8 +29,10 @@ export async function PATCH(
     }
 
     // 保护
-    if (name === '默认频道') {
-      return new NextResponse('名称不能为默认频道', { status: 400 });
+    if (name === DEFAULT_CHANNEL) {
+      return new NextResponse(`频道名称不能为 "${DEFAULT_CHANNEL}"`, {
+        status: 400,
+      });
     }
 
     const server = await db.server.update({
@@ -52,7 +55,7 @@ export async function PATCH(
               id: channelId,
               name: {
                 // 服务端保护
-                not: '默认频道',
+                not: DEFAULT_CHANNEL,
               },
             },
             data: {
@@ -114,7 +117,7 @@ export async function DELETE(
             id: channelId,
             name: {
               // 服务端保护
-              not: '默认频道',
+              not: DEFAULT_CHANNEL,
             },
           },
         },

@@ -6,9 +6,10 @@ import { Edit, Hash, Lock, Mic, Trash, Video } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 
 import { ActionToolTip } from '@/components/action-tooltip';
-import { useModal } from '@/hooks/use-modal-store';
+import { useModal, ModalType } from '@/hooks/use-modal-store';
 
 import { ServerWithMembersWithProfiles } from '@/types';
+import { DEFAULT_CHANNEL } from '@/lib/getEnv';
 
 interface ServerChannelProps {
   channel: Channel;
@@ -29,12 +30,22 @@ function ServerChannel({ channel, server, role }: ServerChannelProps) {
 
   const Icon = iconMap[channel.type];
 
+  const onClick = () => {
+    router.push(`/servers/${server.id}/channels/${channel.id}`);
+  };
+
+  const onAction = (e: React.MouseEvent, action: ModalType) => {
+    e.stopPropagation();
+    onOpen(action, { channel, server });
+  };
+
   return (
     <button
       className={cn(
         'group px-2 py-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1',
         params?.channelId === channel.id && 'bg-zinc-700/20 dark:bg-zinc-700'
       )}
+      onClick={onClick}
     >
       <Icon className='flex-shrink-0 w-5 h-5 text-zinc-500 dark:text-zinc-400'></Icon>
       <p
@@ -46,21 +57,21 @@ function ServerChannel({ channel, server, role }: ServerChannelProps) {
       >
         {channel.name}
       </p>
-      {channel.name === '默认频道' && (
+      {channel.name === DEFAULT_CHANNEL && (
         <Lock className='ml-auto w-4 h-4 text-zinc-500 dark:text-zinc-400'></Lock>
       )}
-      {channel.name !== '默认频道' && role !== MemberRole.GUEST && (
+      {channel.name !== DEFAULT_CHANNEL && role !== MemberRole.GUEST && (
         <div className='ml-auto flex items-center gap-x-2'>
           <ActionToolTip label='编辑'>
             <Edit
               className='hidden group-hover:block w-4 h-4 text-zinc-500 dark:text-zinc-400 dark:hover:text-zinc-300 transition'
-              onClick={() => onOpen('editChannel', { server, channel })}
+              onClick={e => onAction(e, 'editChannel')}
             ></Edit>
           </ActionToolTip>
           <ActionToolTip label='删除'>
             <Trash
               className='hidden group-hover:block w-4 h-4 text-zinc-500 dark:text-zinc-400 dark:hover:text-zinc-300 transition'
-              onClick={() => onOpen('deleteChannel', { server, channel })}
+              onClick={e => onAction(e, 'deleteChannel')}
             ></Trash>
           </ActionToolTip>
         </div>
