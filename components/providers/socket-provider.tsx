@@ -1,5 +1,6 @@
 'use client';
 
+import { WS_URL_IO } from '@/lib/getEnv';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { io as ClientIO } from 'socket.io-client';
 
@@ -25,7 +26,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const socketInstance = new (ClientIO as any)(
       process.env.NEXT_PUBLIC_SITE_URL!,
       {
-        path: '/api/socket/io',
+        path: WS_URL_IO,
         addTrailingSlash: false,
       }
     );
