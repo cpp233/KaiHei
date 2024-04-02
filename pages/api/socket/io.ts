@@ -21,8 +21,8 @@ const ioHandle = (req: NextApiRequest, res: NextApiResponseServerIO) => {
     res.socket.server.io = io;
   }
   // console.log('有一个进来了');
-  // ts-ignore
-  (res as unknown as NextApiResponse).end();
+
+  res.end();
 };
 
 export default ioHandle;
