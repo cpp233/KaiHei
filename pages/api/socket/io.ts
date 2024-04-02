@@ -1,5 +1,5 @@
 import { Server as NetServer } from 'http';
-import { NextApiRequest } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { Server as ServerIO } from 'socket.io';
 
 import { NextApiResponseServerIO } from '@/types';
@@ -15,12 +15,13 @@ const ioHandle = (req: NextApiRequest, res: NextApiResponseServerIO) => {
     // console.log('没有io');
     // console.log(res.socket);
     const path = '/api/socket/io';
-    const httpServer: NetServer = res.socket.server as any;
+    const httpServer: NetServer = res.socket.server as unknown as NetServer;
     const io = new ServerIO(httpServer, { path, addTrailingSlash: false });
     res.socket.server.io = io;
   }
   // console.log('有一个进来了');
-  res.end();
+  // ts-ignore
+  (res as unknown as NextApiResponse).end();
 };
 
 export default ioHandle;
