@@ -5,6 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { ModalProvider } from '@/components/providers/modal-provider';
+import { SocketProvider } from '@/components/providers/socket-provider';
 
 import './globals.css';
 
@@ -30,8 +31,10 @@ export default function RootLayout({
             enableSystem
             storageKey='kaihei-theme'
           >
-            <ModalProvider></ModalProvider>
-            {children}
+            <SocketProvider>
+              <ModalProvider></ModalProvider>
+              {children}
+            </SocketProvider>
           </ThemeProvider>
         </body>
       </html>
