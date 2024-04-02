@@ -3,7 +3,7 @@ import * as z from 'zod';
 import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ChannelType } from '@prisma/client';
 import qs from 'query-string';
 
@@ -46,29 +46,29 @@ const formSchema = z.object({
   type: z.nativeEnum(ChannelType),
 });
 
-export const CreateChannelModel = () => {
+export const EditChannelModel = () => {
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
-  const params = useParams();
 
-  const isModelOpen = isOpen && type === 'createChannel';
-  const channelType = data?.channelType;
+  const isModelOpen = isOpen && type === 'editChannel';
+
+  const server = data?.server;
+  const channel = data?.channel;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      type: channelType || ChannelType.TEXT,
+      type: channel?.type || ChannelType.TEXT,
     },
   });
 
   useEffect(() => {
-    if (channelType) {
-      form.setValue('type', channelType);
-    } else {
-      form.setValue('type', ChannelType.TEXT);
+    if (channel) {
+      form.setValue('name', channel.name);
+      form.setValue('type', channel.type);
     }
-  }, [channelType, form]);
+  }, [channel, form]);
 
   const isLoading = form.formState.isSubmitting;
 
@@ -76,12 +76,12 @@ export const CreateChannelModel = () => {
     // console.log(values);
     try {
       const url = qs.stringifyUrl({
-        url: '/api/channels',
+        url: `/api/channels/${channel?.id}`,
         query: {
-          serverId: params?.serverId,
+          serverId: server?.id,
         },
       });
-      await axios.post(url, values);
+      await axios.patch(url, values);
 
       form.reset();
 
@@ -171,7 +171,7 @@ export const CreateChannelModel = () => {
 
             <DialogFooter className='bg-gray-100 px-6 py-4'>
               <Button variant='primary' disabled={isLoading}>
-                创建
+                保存
               </Button>
             </DialogFooter>
           </form>
