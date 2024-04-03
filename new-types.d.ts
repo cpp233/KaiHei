@@ -13,6 +13,7 @@ declare module NodeJS {
     DEFAULT_CHANNEL: string;
     WS_URL_IO: string;
     WS_URL_MESSAGE: string;
+    WS_URL_DIRECT_MESSAGE: string;
     // 您可以继续在这里添加更多的环境变量
   }
 }

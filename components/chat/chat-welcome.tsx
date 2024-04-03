@@ -17,7 +17,7 @@ const ChatWelcome = ({ name, type }: ChatWelcomeProps) => {
         {type === 'channel' ? '欢迎来到' : ''} {name}
       </p>
       <p className='text-zinc-600 dark:text-zinc-400 text-sm'>
-        {type === 'channel' ? '让我们开始吧' : ''}
+        {type === 'channel' ? '让我们开始群聊吧' : '这是个人消息'}
       </p>
     </div>
   );

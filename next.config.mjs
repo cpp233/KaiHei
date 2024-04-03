@@ -8,7 +8,9 @@ const nextConfig = {
     DEFAULT_CHANNEL: '默认频道',
     WS_URL_IO: '/api/socket/io',
     WS_URL_MESSAGE: '/api/socket/messages',
+    WS_URL_DIRECT_MESSAGE: '/api/socket/direct-messages',
     URL_MESSAGE: '/api/messages',
+    URL_DIRECT_MESSAGE: '/api/direct-messages',
   },
   // webpack: config => {
   //   config.externals.push({
