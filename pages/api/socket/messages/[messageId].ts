@@ -97,8 +97,8 @@ export default async function handler(
           id: messageId as string,
         },
         data: {
-          // fileUrl:null,
-          // content:'此消息被删除',
+          fileUrl: null,
+          content: '此消息被删除',
           deleted: true,
         },
         include: {

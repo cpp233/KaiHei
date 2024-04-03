@@ -15,6 +15,8 @@ import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
+import { useModal } from '@/hooks/use-modal-store';
+import { useParams, useRouter } from 'next/navigation';
 
 interface ChatItemProps {
   id: string;
@@ -66,7 +68,20 @@ const ChatItem = ({
   socketQuery,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const message_url = `${socketUrl}/${id}`;
+  const { onOpen } = useModal();
+  const params = useParams();
+  const router = useRouter();
+
+  const onMemberClick = () => {
+    console.log(member.id === currentMember.id);
+
+    if (member.id === currentMember.id) {
+      return;
+    }
+
+    router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
+  };
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -78,7 +93,7 @@ const ChatItem = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: `${socketUrl}/${id}`,
+        url: message_url,
         query: socketQuery,
       });
 
@@ -131,7 +146,10 @@ const ChatItem = ({
     <div className='relative group flex items-center hover:bg-black/5 p-4 transition w-full'>
       <div className='group flex gpa-x-2 items-start w-full'>
         {/* 头像 */}
-        <div className='cursor-pointer hover:drop-shadow-md transition'>
+        <div
+          className='cursor-pointer hover:drop-shadow-md transition'
+          onClick={onMemberClick}
+        >
           <UserAvatar src={member.profile.imageUrl}></UserAvatar>
         </div>
         {/* 正文 */}
@@ -249,7 +267,15 @@ const ChatItem = ({
             </ActionToolTip>
           )}
           <ActionToolTip label='删除'>
-            <Trash className='cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition'></Trash>
+            <Trash
+              className='cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition'
+              onClick={() =>
+                onOpen('deleteMessage', {
+                  apiUrl: message_url,
+                  query: socketQuery,
+                })
+              }
+            ></Trash>
           </ActionToolTip>
         </div>
       )}
