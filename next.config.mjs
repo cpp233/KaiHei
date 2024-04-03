@@ -8,6 +8,7 @@ const nextConfig = {
     DEFAULT_CHANNEL: '默认频道',
     WS_URL_IO: '/api/socket/io',
     WS_URL_MESSAGE: '/api/socket/messages',
+    URL_MESSAGE: '/api/messages',
   },
 };
 
