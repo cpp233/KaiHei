@@ -1,5 +1,5 @@
 'use client';
-import { Fragment } from 'react';
+import { Fragment, useRef, ElementRef } from 'react';
 import { useChatQuery } from '@/hooks/use-chat-query';
 import { Member, Message, Profile } from '@prisma/client';
 import { Loader2, ServerCrash } from 'lucide-react';
@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import ChatWelcome from './chat-welcome';
 import ChatItem from './chat-item';
 import { useChatSocket } from '@/hooks/use-chat-socket';
+import { useChatScroll } from '@/hooks/use-chat-scroll';
 
 const DATE_FORMAT = 'yyyy-MM-dd HH:mm:ss';
 
@@ -54,6 +55,16 @@ const ChatMessages = ({
 
   useChatSocket({ queryKey, addKey, updateKey });
 
+  const chatRef = useRef<ElementRef<'div'>>(null);
+  const bottomRef = useRef<ElementRef<'div'>>(null);
+  useChatScroll({
+    chatRef,
+    bottomRef,
+    loadMore: fetchNextPage,
+    shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
+    count: data?.pages?.[0]?.items?.length ?? 0,
+  });
+
   if (status === 'pending') {
     return (
       <div className='flex flex-col flex-1 justify-center items-center'>
@@ -73,9 +84,30 @@ const ChatMessages = ({
   }
 
   return (
-    <div className='flex-1 flex flex-col py-4 overflow-y-auto'>
-      <div className='flex-1'></div>
-      <ChatWelcome name={name} type={type}></ChatWelcome>
+    <div className='flex-1 flex flex-col py-4 overflow-y-auto' ref={chatRef}>
+      {/* 没有更多内容，则渲染这个标签 */}
+      {!hasNextPage && (
+        <>
+          <div className='flex-1'></div>
+          <ChatWelcome name={name} type={type}></ChatWelcome>
+        </>
+      )}
+
+      {/* 如果有，则会显示 Loading 动画，并加载 */}
+      {hasNextPage && (
+        <div className='flex justify-center'>
+          {isFetchingNextPage ? (
+            <Loader2 className='h-6 w-6 text-zinc-500 animate-spin my-4'></Loader2>
+          ) : (
+            <button
+              className='text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 text-xs my-4 dark:hover:text-zinc-300 transition'
+              onClick={() => fetchNextPage()}
+            >
+              加载更多消息
+            </button>
+          )}
+        </div>
+      )}
 
       <div className='flex flex-col-reverse mt-auto'>
         {data?.pages.map((group, index) => (
@@ -102,6 +134,7 @@ const ChatMessages = ({
           </Fragment>
         ))}
       </div>
+      <div ref={bottomRef}></div>
     </div>
   );
 };
