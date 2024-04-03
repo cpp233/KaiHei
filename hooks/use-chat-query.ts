@@ -42,6 +42,7 @@ export const useChatQuery = ({
       getNextPageParam: lastPage => lastPage?.nextCursor,
       // 如果 websocket 没了，采用这种方法轮训
       refetchInterval: isConnected ? false : 1000,
+      // refetchInterval: 1000,
       initialPageParam: undefined, // 初始化参数
     });
 

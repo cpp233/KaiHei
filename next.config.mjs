@@ -10,6 +10,13 @@ const nextConfig = {
     WS_URL_MESSAGE: '/api/socket/messages',
     URL_MESSAGE: '/api/messages',
   },
+  // webpack: config => {
+  //   config.externals.push({
+  //     'utf-8-validate': 'commonjs utf-8-validate',
+  //     bufferutil: 'commonjs bufferutil',
+  //   });
+  //   return config;
+  // },
 };
 
 export default nextConfig;
