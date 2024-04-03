@@ -78,7 +78,7 @@ const ChatMessages = ({
             {group.items.map((message: MessageWithMemberWithProfile) => (
               <ChatItem
                 key={message.id}
-                id={member.id}
+                id={message.id}
                 currentMember={member}
                 member={message.member}
                 content={message.content}
@@ -86,6 +86,10 @@ const ChatMessages = ({
                 deleted={message.deleted}
                 timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
                 isUpdated={message.updatedAt !== message.createdAt}
+                timestampUpdated={format(
+                  new Date(message.updatedAt),
+                  DATE_FORMAT
+                )}
                 socketUrl={socketUrl}
                 socketQuery={socketQuery}
               ></ChatItem>

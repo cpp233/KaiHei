@@ -54,7 +54,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
         apiUrl='/api/messages'
         socketUrl={WS_URL_MESSAGE}
         socketQuery={{
-          channelID: channel.id,
+          channelId: channel.id,
           serverId: channel.serverId,
         }}
         paramKey='channelId'

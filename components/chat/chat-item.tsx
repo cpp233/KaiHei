@@ -27,6 +27,7 @@ interface ChatItemProps {
   fileUrl: string | null;
   currentMember: Member;
   isUpdated: boolean;
+  timestampUpdated: string;
   socketUrl: string;
   socketQuery: Record<string, string>;
 }
@@ -60,6 +61,7 @@ const ChatItem = ({
   deleted,
   currentMember,
   isUpdated,
+  timestampUpdated,
   socketUrl,
   socketQuery,
 }: ChatItemProps) => {
@@ -81,6 +83,9 @@ const ChatItem = ({
       });
 
       await axios.patch(url, values);
+
+      form.reset();
+      setIsEditing(false);
     } catch (error) {
       console.log(error);
     }
@@ -186,9 +191,13 @@ const ChatItem = ({
             >
               {content}
               {isUpdated && !deleted && (
-                <span className='text-[10px] mx-2 text-zinc-500 dark:text-zinc-400'>
-                  (已编辑)
-                </span>
+                <ActionToolTip
+                  label={timestampUpdated ? `编辑于:${timestampUpdated}` : ''}
+                >
+                  <span className='text-[10px] mx-2 text-zinc-500 dark:text-zinc-400'>
+                    (已编辑)
+                  </span>
+                </ActionToolTip>
               )}
             </p>
           )}
