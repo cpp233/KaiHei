@@ -8,15 +8,19 @@ import ChatHeader from '@/components/chat/chat-header';
 import ChatMessages from '@/components/chat/chat-messages';
 import ChatInput from '@/components/chat/chat-input';
 import { WS_URL_DIRECT_MESSAGE } from '@/lib/getEnv';
+import { MediaRoom } from '@/components/media-room';
 
 interface MemberIdPageProps {
   params: {
     memberId: string;
     serverId: string;
   };
+  searchParams: {
+    video?: boolean;
+  };
 }
 
-const MemberIdPage = async ({ params }: MemberIdPageProps) => {
+const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
   const profile = await currentProfile();
 
   if (!profile) {
@@ -60,27 +64,40 @@ const MemberIdPage = async ({ params }: MemberIdPageProps) => {
         serverId={params.serverId}
         type='conversation'
       ></ChatHeader>
-      <ChatMessages
-        member={currentMember}
-        name={otherMember.profile.name}
-        chatId={conversation.id}
-        type='conversation'
-        apiUrl='/api/direct-messages'
-        paramKey='conversationId'
-        paramValue={conversation.id}
-        socketUrl={WS_URL_DIRECT_MESSAGE}
-        socketQuery={{
-          conversationId: conversation.id,
-        }}
-      ></ChatMessages>
-      <ChatInput
-        name={otherMember.profile.name}
-        type='conversation'
-        apiUrl={WS_URL_DIRECT_MESSAGE}
-        query={{
-          conversationId: conversation.id,
-        }}
-      ></ChatInput>
+      {/* 常规 */}
+      {!searchParams.video && (
+        <>
+          <ChatMessages
+            member={currentMember}
+            name={otherMember.profile.name}
+            chatId={conversation.id}
+            type='conversation'
+            apiUrl='/api/direct-messages'
+            paramKey='conversationId'
+            paramValue={conversation.id}
+            socketUrl={WS_URL_DIRECT_MESSAGE}
+            socketQuery={{
+              conversationId: conversation.id,
+            }}
+          ></ChatMessages>
+          <ChatInput
+            name={otherMember.profile.name}
+            type='conversation'
+            apiUrl={WS_URL_DIRECT_MESSAGE}
+            query={{
+              conversationId: conversation.id,
+            }}
+          ></ChatInput>
+        </>
+      )}
+      {/* 流媒体 */}
+      {searchParams.video && (
+        <MediaRoom
+          chatId={conversation.id}
+          isAudio={true}
+          isVideo={true}
+        ></MediaRoom>
+      )}
     </div>
   );
 };
