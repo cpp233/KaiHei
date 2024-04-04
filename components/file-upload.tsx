@@ -71,6 +71,49 @@ export const FileUpload = ({ endpoint, value, onChange }: FileUploadProps) => {
         window.alert('onUploadError');
         console.error(error);
       }}
+      appearance={{
+        button: ({ ready, isUploading }) => {
+          return {
+            // fontSize: '1.0rem',
+            class: 'hover:text-zinc-500',
+            ...(ready && { color: '#ecfdf5' }),
+            ...(isUploading && { color: '#d1d5db' }),
+          };
+        },
+      }}
+      content={{
+        label: ({ ready, fileTypes, isUploading }) => {
+          if (!ready) {
+            return '准备中...';
+          }
+          if (isUploading) {
+            return '上传中...';
+          }
+          return '选择一个文件，或拖动到此处';
+        },
+        allowedContent: ({ ready, fileTypes, isUploading }) => {
+          if (!ready) {
+            return '准备中...';
+          }
+
+          return `可以选择以下类型的文件：${fileTypes.join(', ')}`;
+        },
+        button: ({
+          ready,
+          fileTypes,
+          isUploading,
+          uploadProgress,
+          isDragActive,
+        }) => {
+          if (!ready) {
+            return '准备中...';
+          }
+          if (isUploading) {
+            return `上传中...${uploadProgress}`;
+          }
+          return `上传`;
+        },
+      }}
     ></UploadDropzone>
   );
 };
