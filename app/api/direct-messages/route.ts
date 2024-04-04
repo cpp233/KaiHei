@@ -2,6 +2,7 @@ import { currentProfile } from '@/lib/current-profile';
 import { db } from '@/lib/db';
 import { DirectMessage, Message } from '@prisma/client';
 import { NextResponse } from 'next/server';
+// import { URL } from 'node:url';
 
 const MESSAGE_BATCH = 10;
 
