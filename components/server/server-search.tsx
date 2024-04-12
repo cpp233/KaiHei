@@ -77,7 +77,7 @@ const ServerSearch = ({ data }: ServerSearchProps) => {
     const matchArr = match(value, search, {
       precision: 'start',
     });
-    console.log(value, search, keywords, matchArr);
+    // console.log(value, search, keywords, matchArr);
 
     return matchArr?.length / value?.length;
   };

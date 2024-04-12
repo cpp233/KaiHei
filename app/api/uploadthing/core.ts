@@ -9,7 +9,7 @@ const f = createUploadthing();
 const handleAuth = () => {
   // const auth2 = auth();
   const { userId } = auth();
-  // console.log(auth2, userId);
+
   if (!userId) {
     throw new Error('未认证');
   }

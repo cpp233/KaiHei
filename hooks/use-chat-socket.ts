@@ -60,7 +60,7 @@ export const useChatSocket = ({
     socket.on(addKey, (message: MessageWithMemberWithProfile) => {
       // 通过 queryClient 手动更新本地消息
       queryClient.setQueryData([queryKey], (oldData: any) => {
-        console.log('addKey', oldData);
+        // console.log('addKey', oldData);
         if (!oldData || !oldData.pages || oldData.pages.length === 0) {
           return {
             pages: [

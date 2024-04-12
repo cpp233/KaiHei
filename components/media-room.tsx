@@ -46,8 +46,6 @@ export const MediaRoom = ({ chatId, isVideo, isAudio }: MediaRoomProps) => {
     );
   }
 
-  console.log(isVideo, isAudio, token, process.env.NEXT_PUBLIC_LIVEKIT_URL);
-
   return (
     <LiveKitRoom
       video={isVideo}

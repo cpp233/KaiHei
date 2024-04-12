@@ -2,9 +2,8 @@ import { currentProfile } from '@/lib/current-profile';
 import { db } from '@/lib/db';
 import { DirectMessage, Message } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import { MESSAGE_BATCH } from '@/lib/getEnv';
 // import { URL } from 'node:url';
-
-const MESSAGE_BATCH = 10;
 
 export async function GET(req: Request) {
   try {

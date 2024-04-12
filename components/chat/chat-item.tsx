@@ -74,8 +74,6 @@ const ChatItem = ({
   const router = useRouter();
 
   const onMemberClick = () => {
-    console.log(member.id === currentMember.id);
-
     if (member.id === currentMember.id) {
       return;
     }
