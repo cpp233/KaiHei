@@ -12,7 +12,8 @@
     "db-init": "prisma init --datasource-provider sqlite",
     "db-generate": "prisma generate",
     "db-push": "prisma db push",
-    "db-delete": "prisma migrate reset"
+    "db-delete": "prisma migrate reset",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clerk/localizations": "^1.28.1",
