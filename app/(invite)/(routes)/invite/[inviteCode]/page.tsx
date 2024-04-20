@@ -1,7 +1,8 @@
-import { currentProfile } from '@/lib/current-profile';
-import { db } from '@/lib/db';
 import { redirectToSignIn } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
+
+import { initProfile } from '@/lib/init-profile';
+import { db } from '@/lib/db';
 
 interface InviteCodeProps {
   params: {
@@ -10,7 +11,7 @@ interface InviteCodeProps {
 }
 
 const InviteCodePage = async ({ params }: InviteCodeProps) => {
-  const profile = await currentProfile();
+  const profile = await initProfile();
 
   if (!profile) {
     return redirectToSignIn();
@@ -30,9 +31,6 @@ const InviteCodePage = async ({ params }: InviteCodeProps) => {
       },
     },
   });
-
-  // TODO:
-  // 是否应该加入确认邀请的功能？
 
   // 确实存在这个邀请码，则跳转。
   if (existServer) {
