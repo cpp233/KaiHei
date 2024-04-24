@@ -1,5 +1,10 @@
 import { SignIn } from '@clerk/nextjs';
 
 export default function Page() {
-  return <SignIn routing='hash' />;
+  return (
+    <SignIn
+      path='/sign-in'
+      //  routing='hash'
+    />
+  );
 }
