@@ -11,16 +11,20 @@ interface InviteCodeProps {
 }
 
 const InviteCodePage = async ({ params }: InviteCodeProps) => {
+  // 初始化用户，防止用户首次进入为此页面
   const profile = await initProfile();
 
+  // 未登录转向登录
   if (!profile) {
     return auth().redirectToSignIn();
   }
 
+  // 无参数转到首页
   if (!params.inviteCode) {
     return redirect('/');
   }
 
+  // 寻找同时含 邀请码 & 用户 的服务器
   const existServer = await db.server.findFirst({
     where: {
       inviteCode: params.inviteCode,
@@ -32,12 +36,12 @@ const InviteCodePage = async ({ params }: InviteCodeProps) => {
     },
   });
 
-  // 确实存在这个邀请码，则跳转。
+  // 如果用户已经加入了服务器，则直接跳转到该服务器
   if (existServer) {
     return redirect(`/servers/${existServer.id}`);
   }
 
-  // 把当前用户加入到服务器中
+  // 把未在服务器中的用户加入
   const server = await db.server.update({
     where: {
       inviteCode: params.inviteCode,
