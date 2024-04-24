@@ -1,4 +1,4 @@
-import { redirectToSignIn } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
 import { initProfile } from '@/lib/init-profile';
@@ -14,7 +14,7 @@ const InviteCodePage = async ({ params }: InviteCodeProps) => {
   const profile = await initProfile();
 
   if (!profile) {
-    return redirectToSignIn();
+    return auth().redirectToSignIn();
   }
 
   if (!params.inviteCode) {

@@ -1,12 +1,19 @@
-import { authMiddleware } from '@clerk/nextjs';
+// import { authMiddleware } from '@clerk/nextjs';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
 // See https://clerk.com/docs/references/nextjs/auth-middleware
 // for more information about configuring your Middleware
-export default authMiddleware({
-  // Allow signed out users to access the specified routes:
-  // publicRoutes: ['/sign-in', '/sign-up'],
-  // http://localhost:3001/sign-in
-  publicRoutes: ['/api/uploadthing', '/api/socket/io'],
+// export default authMiddleware({
+//   // Allow signed out users to access the specified routes:
+//   // publicRoutes: ['/sign-in', '/sign-up'],
+//   // http://localhost:3001/sign-in
+//   publicRoutes: ['/api/uploadthing', '/api/socket/io'],
+// });
+const isPublicRoute = createRouteMatcher(['/sign-in', '/sign-up']);
+export default clerkMiddleware((auth, request) => {
+  if (!isPublicRoute(request)) {
+    auth().protect();
+  }
 });
 
 export const config = {

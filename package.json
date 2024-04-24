@@ -16,8 +16,8 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@clerk/localizations": "^1.28.1",
-    "@clerk/nextjs": "^4.29.9",
+    "@clerk/localizations": "^2.0.0",
+    "@clerk/nextjs": "^5.0.1",
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
     "@hookform/resolvers": "^3.3.4",
